@@ -1,0 +1,196 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "type": "object",
+      "description": "Represents a user profile in the application.",
+      "properties": {
+        "name": { "type": "string", "description": "User's full name." },
+        "email": { "type": "string", "description": "User's email address.", "format": "email" },
+        "phone": { "type": "string", "description": "User's phone number." },
+        "photoURL": { "type": "string", "description": "URL to the user's profile picture.", "format": "uri" },
+        "gender": { "type": "string", "enum": ["Male", "Female", "Other", "Prefer not to say"] },
+        "dateOfBirth": { "type": "string", "format": "date" },
+        "address": { "type": "string" },
+        "linkedin": { "type": "string", "description": "User's LinkedIn profile URL." },
+        "github": { "type": "string", "description": "User's GitHub profile URL." },
+        "education": {
+          "type": "array",
+          "description": "List of user's educational experiences.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "degree": { "type": "string" },
+              "university": { "type": "string" },
+              "year": { "type": "string" },
+              "duration": { "type": "string" }
+            }
+          }
+        },
+        "experience": {
+          "type": "array",
+          "description": "List of user's professional experiences.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "company": { "type": "string" },
+              "role": { "type": "string" },
+              "duration": { "type": "string" },
+              "description": { "type": "string" }
+            }
+          }
+        },
+        "skills": { "type": "array", "items": { "type": "string" } },
+        "projects": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "title": { "type": "string" },
+              "tech": { "type": "string" },
+              "description": { "type": "string" }
+            }
+          }
+        },
+        "certifications": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "title": { "type": "string" },
+              "issuer": { "type": "string" }
+            }
+          }
+        },
+        "jobPreferences": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "desiredRoles": { "type": "string" },
+              "locationPreference": { "type": "string" },
+              "keywords": { "type": "string" }
+            }
+          }
+        },
+        "profileCompleted": { "type": "boolean", "default": false },
+        "subscription": {
+          "type": "object",
+          "properties": {
+            "plan": { "type": "string", "enum": ["Starter", "Pro", "Elite"], "default": "Starter" },
+            "status": { "type": "string", "enum": ["active", "expired"], "default": "active" },
+            "validUntil": { "type": "string", "format": "date-time" }
+          },
+          "required": ["plan", "status"]
+        }
+      },
+      "required": ["email", "profileCompleted", "subscription"]
+    },
+    "Resume": {
+      "title": "Resume",
+      "type": "object",
+      "description": "Represents a resume generated for a user.",
+      "properties": {
+        "userId": { "type": "string" },
+        "role": { "type": "string" },
+        "summary": { "type": "string" },
+        "skills": { "type": "string" },
+        "experience": { "type": "string" },
+        "projects": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "role", "createdAt"]
+    },
+    "JobApplication": {
+      "title": "Job Application",
+      "type": "object",
+      "description": "Represents a job application tracked by the user.",
+      "properties": {
+        "userId": { "type": "string" },
+        "company": { "type": "string" },
+        "role": { "type": "string" },
+        "location": { "type": "string" },
+        "status": { "type": "string", "enum": ["Applied", "Under Review", "Interview", "Offer", "Rejected"] },
+        "resumeUsed": { "type": "string" },
+        "appliedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "company", "role", "location", "status", "resumeUsed", "appliedAt"]
+    },
+    "Job": {
+      "title": "Job",
+      "type": "object",
+      "description": "Represents a job listing available for users to apply to.",
+      "properties": {
+        "role": { "type": "string" },
+        "company": { "type": "string" },
+        "location": { "type": "string" },
+        "description": { "type": "string" }
+      },
+      "required": ["role", "company", "location", "description"]
+    },
+    "Payment": {
+      "title": "Payment",
+      "type": "object",
+      "description": "Represents a payment made by a user for a subscription.",
+      "properties": {
+        "userId": { "type": "string" },
+        "plan": { "type": "string", "enum": ["Starter", "Pro", "Elite"] },
+        "amount": { "type": "number" },
+        "transactionId": { "type": "string" },
+        "paymentMethod": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "status": { "type": "string", "enum": ["success", "failed"] }
+      },
+      "required": ["userId", "plan", "amount", "transactionId", "paymentMethod", "timestamp", "status"]
+    }
+  },
+  "auth": {
+    "providers": ["google.com", "facebook.com", "apple.com", "password"],
+    "customClaims": {
+      "admin": {
+        "type": "boolean",
+        "description": "Indicates whether the user has administrative privileges."
+      }
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/User" },
+      "description": "Stores user profile data."
+    },
+    "/users/{userId}/resumes/{resumeId}": {
+      "schema": { "$ref": "#/entities/Resume" },
+      "description": "Stores resumes generated by the user."
+    },
+    "/users/{userId}/jobs/{jobId}": {
+      "schema": { "$ref": "#/entities/JobApplication" },
+      "description": "Stores job applications tracked by the user."
+    },
+    "/jobs/{jobId}": {
+      "schema": { "$ref": "#/entities/Job" },
+      "description": "Stores available job listings for all users."
+    },
+    "/payments/{paymentId}": {
+      "schema": { "$ref": "#/entities/Payment" },
+      "description": "Stores payment records for user subscriptions."
+    }
+  }
+  ,
+  "endpoints": {
+    "/api/applications/submit": { "method": "POST", "body": { "userId": "string", "jobId": "string" }, "description": "Create application (server validates plan and priority)." },
+    "/api/admin/add-employee": { "method": "POST", "headers": { "Authorization": "Bearer <idToken>" }, "body": { "userId": "string", "email": "string", "role": "string" }, "description": "Add a user as employee (server only, admin verified via admins collection)." },
+    "/api/admin/generate-resume": { "method": "POST", "body": { "uid": "string", "resume": {}, "profile": {} }, "description": "Trigger server-side resume generation and email." },
+    "/api/plan/upgrade-webhook": { "method": "POST", "body": { "uid": "string", "planType": "string", "durationDays": "number|optional" }, "description": "Payment webhook to update user plan." },
+    "/api/payments/webhook": { "method": "POST", "body": { "userId": "string", "planType": "string" }, "description": "Generic payments webhook endpoint (use provider signature verification)." }
+  }
+  ,
+  "pricing": {
+    "elite": { "price": 10000, "currency": "INR", "description": "Elite Add-Ons: premium features and coaching" },
+    "pro_onetime": { "price": 500, "currency": "INR", "description": "Pro one-time for job hunters" },
+    "payg": { "perApplication": 2, "perApproved": 3, "currency": "INR" },
+    "starter_onboarding": { "price": 25, "currency": "INR" }
+  },
+  "endpoints_extra": {
+    "/api/payments/create-intent": { "method": "POST", "body": { "userId": "string", "planId": "string" }, "description": "Returns amount, timestamp and HMAC signature payload for client-side payment verification." }
+  }
+}

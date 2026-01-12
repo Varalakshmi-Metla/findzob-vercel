@@ -1,0 +1,20 @@
+<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" width="64" height="64">
+  <!-- Simple, straight Z in bold sans-serif style -->
+  <defs>
+    <linearGradient id="zGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3B82F6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1E40AF;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background circle with transparency -->
+  <circle cx="32" cy="32" r="32" fill="white" opacity="0" />
+  
+  <!-- Z letter in gradient blue -->
+  <path d="M 16 16 L 48 16 L 16 48 L 48 48" 
+        stroke="url(#zGradient)" 
+        stroke-width="5" 
+        fill="none" 
+        stroke-linecap="round" 
+        stroke-linejoin="round" />
+</svg>

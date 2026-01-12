@@ -1,0 +1,22 @@
+<svg viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg" width="128" height="128">
+  <!-- Full logo: Simple Z with proper transparency and professional styling -->
+  <defs>
+    <linearGradient id="zLogoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3B82F6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1E40AF;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Transparent background -->
+  <rect width="128" height="128" fill="transparent" />
+  
+  <!-- Main Z shape - straight, modern, geometric -->
+  <g transform="translate(20, 20) scale(0.8)">
+    <path d="M 8 8 L 128 8 L 8 128 L 128 128" 
+          stroke="url(#zLogoGradient)" 
+          stroke-width="14" 
+          fill="none" 
+          stroke-linecap="round" 
+          stroke-linejoin="round" />
+  </g>
+</svg>

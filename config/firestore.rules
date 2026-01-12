@@ -1,0 +1,20 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Users can read and write their own data
+    match /users/{userId}/{documents=**} {
+      allow read, write: if request.auth.uid == userId;
+    }
+
+    // Users can create applications and read/update/delete their own applications
+    match /applications/{applicationId} {
+      allow create: if request.auth.uid == request.resource.data.userId;
+      allow read, update, delete: if request.auth.uid == resource.data.userId;
+    }
+
+    // Allow read access to plans for all users
+    match /admin/plans/plans/{planId} {
+      allow read: if true;
+    }
+  }
+}
