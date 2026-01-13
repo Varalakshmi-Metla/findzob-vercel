@@ -6,13 +6,33 @@ import Stripe from 'stripe';
 
 // Import the service account key directly from the file for reliability
 //import serviceAccount from '../../../../../serviceAccountKey.json';
-const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT as string);
+/*const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT as string);
 // Initialize Firebase Admin if not already initialized
 if (!getApps().length) {
   initializeApp({
     credential: cert(serviceAccount as ServiceAccount),
   });
+} */ 
+function initFirebase() {
+  if (getApps().length) return;
+
+  if (!process.env.FIREBASE_SERVICE_ACCOUNT) {
+    throw new Error('FIREBASE_SERVICE_ACCOUNT missing');
+  }
+
+  let serviceAccount;
+
+  try {
+    serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+  } catch (e) {
+    throw new Error('Invalid FIREBASE_SERVICE_ACCOUNT JSON');
+  }
+
+  initializeApp({
+    credential: cert(serviceAccount),
+  });
 }
+
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2024-06-20' });
 
