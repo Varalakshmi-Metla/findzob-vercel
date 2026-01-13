@@ -38,6 +38,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: '2024-06
 
 // POST /api/wallet/update-balance: Update wallet amount after payment or just fetch balance
 export async function POST(req: NextRequest) {
+  initFirebase();
   try {
     const { userId, sessionId } = await req.json();
     if (!userId) {
