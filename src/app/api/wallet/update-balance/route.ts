@@ -5,8 +5,8 @@ import type { ServiceAccount } from 'firebase-admin';
 import Stripe from 'stripe';
 
 // Import the service account key directly from the file for reliability
-import serviceAccount from '../../../../../serviceAccountKey.json';
-
+//import serviceAccount from '../../../../../serviceAccountKey.json';
+const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT as string);
 // Initialize Firebase Admin if not already initialized
 if (!getApps().length) {
   initializeApp({
